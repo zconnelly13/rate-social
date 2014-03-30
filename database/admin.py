@@ -1,5 +1,7 @@
 from django.contrib import admin
 from database.models import User, Rating
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('name','id')
+admin.site.register(User,UserAdmin)
 admin.site.register(Rating)
