@@ -5,20 +5,27 @@ from json import dumps
 def add_user(request):
     name = request.GET.get('name',None)
     profile_picture = request.GET.get('profile_picture_url',None)
-    import ipdb;ipdb.set_trace();
     if name is not None and profile_picture is not None:
         user = User()
         user.name = name
         user.profile_picture = profile_picture
+        user.rating = 5
         user.save()
-        context = {'success' : 'true'} 
-        return get_json_response(context);
+        return HttpResponse('woot!')
     else:
-        context = {'success' : 'false','error':'please provide both a username and a profile picture url'}
-        return get_json_response(context)
+        return HttpResponse('awh :( something went wrong') 
 
 def add_rating(request):
-    return HttpResponse("Hello! :)))")
-
-def get_json_response(context):
-    return HttpResponse(dumps(context))
+    rater_id = request.GET.get('rater')
+    ratee_id = request.GET.get('ratee')
+    comment = request.GET.get('comment')
+    number = request.GET.get('number')
+    rater = User.objects.filter(id=rater_id)[0]
+    ratee = User.objects.filter(id=ratee_id)[0]
+    rating = Rating()
+    rating.rater = rater
+    rating.ratee = ratee
+    rating.comment = comment
+    rating.number = number
+    rating.save()
+    return HttpResponse("yay! success!")
