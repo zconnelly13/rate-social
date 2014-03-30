@@ -1,6 +1,8 @@
 from django.db import models
 
 class User(models.Model):
+    name = models.CharField(max_length = 256)
+    profile_picture = models.URLField()
     rating = models.FloatField()
     friends = models.ManyToManyField('User')
 
